@@ -1,41 +1,58 @@
 const router = require('express').Router()
+const md = require('./accounts-middleware')
 
 router.get('/', (req, res, next) => {
+  
   try{
-    throw new Error('arr')
+    res.json([{},{}])
+    
 
   }catch (err){
     next({status: 422, message: "shit"})
   }
 })
 
-router.get('/:id', (req, res, next) => {
+router.get('/:id', md.checkAccountId, (req, res, next) => {
+ 
   try{
+    res.json('get account')
 
   }catch (err){
     next(err)
   }
 })
 
-router.post('/', (req, res, next) => {
-  try{
+router.post(
+  '/', 
+  md.checkAccountPayload, 
+  md.checkAccountNameUnique ,(req, res, next) => {
+  
+  try{ 
+    res.json('post account')
 
   }catch (err){
     next(err)
   }
 })
 
-router.put('/:id', (req, res, next) => {
+router.put('/:id', 
+md.checkAccountId,
+md.checkAccountPayload,
+md.checkAccountNameUnique, (req, res, next) => {
+  
   try{
+    res.json('update accounts')
 
   }catch (err){
     next(err)
   }
 });
 
-router.delete('/:id', (req, res, next) => {
+router.delete('/:id',md.checkAccountId,(req, res, next) => {
+  
   try{
 
+    res.json('delete accounts')
   }catch (err){
     next(err)
   }
