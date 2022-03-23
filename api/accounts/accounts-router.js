@@ -22,10 +22,11 @@ router.get('/:id', md.checkAccountId, async (req, res, next) => {
 router.post(
   '/', 
   md.checkAccountPayload, 
-  md.checkAccountNameUnique ,(req, res, next) => {
+  md.checkAccountNameUnique , async (req, res, next) => {
   
   try{ 
-    res.json('post account')
+    const newAccount = await Account.create(req.body)
+    res.status(201).json(newAccount)
 
   }catch (err){
     next(err)
@@ -45,11 +46,11 @@ md.checkAccountNameUnique, (req, res, next) => {
   }
 });
 
-router.delete('/:id',md.checkAccountId,(req, res, next) => {
+router.delete('/:id',md.checkAccountId, async (req, res, next) => {
   
   try{
-
-    res.json('delete accounts')
+  await Account.deleteById(req.params.id)
+    res.json(req.account)
   }catch (err){
     next(err)
   }
